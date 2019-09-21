@@ -21,8 +21,7 @@ public class Main {
 
             URL url = new URL(/*"https://nat-geo.ru/"*/"https://www.google.ru/");
             String URL_img = "";
-            String pixIMG ="";
-            String sizeIMG ="";
+            float sizeIMG = 0;
 
             try {
                 LineNumberReader reader = new LineNumberReader(new InputStreamReader(url.openStream()));
@@ -31,20 +30,16 @@ public class Main {
                 while (HTMLCode != null) {          //прогон всего кода элемента
                     Pattern img = Pattern.compile("<img (.*?)>"); //поиск картинок
                     Matcher findImg = img.matcher(HTMLCode);
-                    if (findImg.find()) {
+                    if (findImg.find()) {                   //если обнаружено изображение
                         String tempImg = findImg.group(1);
                         Pattern src = Pattern.compile("src=\"(.*?)\""); //извлечение адреса изображения
                         Matcher findSrc = src.matcher(tempImg);
                         if(findSrc.find())
                         {
                            URL_img = url.toString() + findSrc.group(1);
-                            //Image image = null;
-                            URL url1 = new URL(URL_img);
-                            Image image = ImageIO.read(url1);
-
-                           //Image image = new ImageIcon("D:/image.jpg").getImage();
-                           // pixIMG = ;
-                           System.out.println("URL изображения: " + URL_img + ",  разрешение изображения " + image.getWidth(null) +" X "+ image.getHeight(null) +",  размер изображения:" + sizeIMG);
+                           URL url1 = new URL(URL_img);
+                           Image image = ImageIO.read(url1);
+                           System.out.println("URL изображения: " + URL_img + ",  разрешение изображения " + image.getWidth(null) +" X "+ image.getHeight(null) +",  размер изображения:" + url1.openConnection().getContentLength() + "байт");
                         }
                     }
                     HTMLCode = reader.readLine();
