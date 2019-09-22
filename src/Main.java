@@ -14,32 +14,26 @@ import java.util.regex.Pattern;
 public class Main {
     public static void main(String[] args) throws IOException {
         try {
-           /* Scanner in = new Scanner(System.in);
-            System.out.print("Введите ссылку: ");
-            String link = in.nextLine();
-            in.close();*/
-
-            URL url = new URL(/*"https://nat-geo.ru/"*/"https://www.google.ru/");
+            URL url = new URL("https://www.google.ru/");
             String URL_img = "";
-            float sizeIMG = 0;
 
             try {
                 LineNumberReader reader = new LineNumberReader(new InputStreamReader(url.openStream()));
-                String HTMLCode = reader.readLine(); //запись кода страницы в переменную
+                String HTMLCode = reader.readLine();
 
-                while (HTMLCode != null) {          //прогон всего кода элемента
-                    Pattern img = Pattern.compile("<img (.*?)>"); //поиск картинок
+                while (HTMLCode != null) {
+                    Pattern img = Pattern.compile("<img (.*?)>");
                     Matcher findImg = img.matcher(HTMLCode);
-                    if (findImg.find()) {                   //если обнаружено изображение
+                    if (findImg.find()) {
                         String tempImg = findImg.group(1);
-                        Pattern src = Pattern.compile("src=\"(.*?)\""); //извлечение адреса изображения
+                        Pattern src = Pattern.compile("src=\"(.*?)\"");
                         Matcher findSrc = src.matcher(tempImg);
                         if(findSrc.find())
                         {
                            URL_img = url.toString() + findSrc.group(1);
                            URL url1 = new URL(URL_img);
                            Image image = ImageIO.read(url1);
-                           System.out.println("URL изображения: " + URL_img + ",  разрешение изображения " + image.getWidth(null) +" X "+ image.getHeight(null) +",  размер изображения:" + url1.openConnection().getContentLength() + "байт");
+                           System.out.println("URL: " + URL_img + ",  разрешение: " + image.getWidth(null) +" x "+ image.getHeight(null) +",  размер: " + url1.openConnection().getContentLength() + " байт");
                         }
                     }
                     HTMLCode = reader.readLine();
@@ -48,7 +42,6 @@ public class Main {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
         } catch (MalformedURLException ex) {
             ex.printStackTrace();
         }
